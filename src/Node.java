@@ -32,10 +32,28 @@ public class Node extends JButton implements ActionListener {
 
     }
 
+    //method to set specific node as start
+    public void setAsStart(){
+        setBackground(Color.orange);
+        setForeground(Color.black);
+        setText("S");
+        start = true;
+
+    }
+
+    //method to set specific node as goal
+    public void setAsGoal(){
+        setBackground(Color.RED);
+        setForeground(Color.black);
+        setText("E");
+        start = true;
+
+    }
+
     // actions when button is clicked
     @Override
     public void actionPerformed(ActionEvent e){
-        setBackground(Color.orange);
+        setBackground(Color.yellow);
     }
 
 }

@@ -10,9 +10,9 @@ public class Panel  extends JPanel {
     final int screenHeight  = nodeSize*maxRow;
     final int screenWidth = nodeSize*maxCol;
 
-    // Nodes in 2D array
+    // Nodes in 2D array with start, end, and current nodes
     Node[][] node = new Node [maxCol][maxRow];
-
+    Node startNode, goalNode, currentNode;
 
     // Constructor
     public Panel(){
@@ -35,6 +35,22 @@ public class Panel  extends JPanel {
                 row++;
             }
         }
+
+        setStartNode(0,0);
+        setGoalNode(9,9);
+
+    }
+
+    private void setStartNode(int col, int row){
+        node[col][row].setAsStart();
+        startNode = node[col][row];
+        currentNode = startNode;
+        // at the beginning of runtime startNode is the currentNode
+    }
+
+    private void setGoalNode(int col, int row){
+        node[col][row].setAsGoal();
+        goalNode = node[col][row];
 
     }
 
