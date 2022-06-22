@@ -48,6 +48,7 @@ public class Panel  extends JPanel {
         //Scanner scanner = new Scanner("Which option?");
 
         // setting initial nodes
+        // customized method to randomize paths will be implemented soon
 
         //setting start and goal node
         setStartNode(0,0);
@@ -86,6 +87,7 @@ public class Panel  extends JPanel {
     }
 
 
+    // Methods for setting specific type of nodes
     private void setStartNode(int col, int row){
         node[col][row].setAsStart();
         startNode = node[col][row];
@@ -138,7 +140,7 @@ public class Panel  extends JPanel {
         // Displaying cost on node
         if(node != startNode && node != goalNode){
 //            node.setText("<html>F:"+node.fCost+"<br>G:"+node.gCost + "</html>");
-            node.setText("<html>F:"+node.fCost+"<br>G:"+node.gCost + "</html>");
+            //node.setText("<html>F:"+node.fCost+"<br>G:"+node.gCost + "</html>");
         }
 
 
@@ -290,12 +292,12 @@ public class Panel  extends JPanel {
         Node current = goalNode;
 
         // adding to result arraylist
-        resultArray.add("("+current.col + ","+current.row+")");
+        resultArray.add("("+current.row + ","+current.col+")");
 
         while(current != startNode){
 
             current = current.parent;
-            resultArray.add("("+current.col + ","+current.row+")");
+            resultArray.add("("+current.row + ","+current.col+")");
 
             if(current != startNode){
                 current.setAsPath();

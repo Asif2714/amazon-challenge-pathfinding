@@ -47,7 +47,7 @@ public class Node extends JButton implements ActionListener {
     //method to set specific node as goal
     public void setAsGoal(){
         setBackground(Color.BLUE);
-        setForeground(Color.black);
+        setForeground(Color.white);
         setText("E");
         start = true;
 
@@ -60,7 +60,7 @@ public class Node extends JButton implements ActionListener {
         solid = true;
     }
 
-    //
+    // methods to set specific instance variables of Node
     public void setAsOpen(){
         open = true;
     }
@@ -71,6 +71,9 @@ public class Node extends JButton implements ActionListener {
         }
         checked = true;
     }
+
+    // Method which makes nodes the final path - used for backtracking
+    // and final path display
     public void setAsPath(){
         setBackground(Color.green);
         setForeground(Color.black);

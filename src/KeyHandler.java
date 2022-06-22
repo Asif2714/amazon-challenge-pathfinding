@@ -1,6 +1,7 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+// Handler with deals with the Enter Button
 public class KeyHandler implements KeyListener {
 
     Panel panel;
