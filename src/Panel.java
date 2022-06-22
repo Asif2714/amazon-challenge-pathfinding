@@ -45,6 +45,8 @@ public class Panel  extends JPanel {
             }
         }
 
+        //Scanner scanner = new Scanner("Which option?");
+
         // setting initial nodes
 
         //setting start and goal node
@@ -136,7 +138,7 @@ public class Panel  extends JPanel {
         // Displaying cost on node
         if(node != startNode && node != goalNode){
 //            node.setText("<html>F:"+node.fCost+"<br>G:"+node.gCost + "</html>");
-            node.setText("<html>H:"+node.hCost+"<br>G:"+node.gCost + "</html>");
+            node.setText("<html>F:"+node.fCost+"<br>G:"+node.gCost + "</html>");
         }
 
 
@@ -300,13 +302,32 @@ public class Panel  extends JPanel {
             }
         }
 
-        //printing result arrayList in reverse
-        System.out.print("The path is: [");
+        //printing result arrayList in reverse and also sending to GUI
+        String resultPath = "The path is: [";
+        String resultSteps = "";
+        System.out.print(resultPath);
         for (int i = resultArray.size()-1; i >= 0; i--){
             System.out.print(resultArray.get(i)+" ");
+            resultPath += resultArray.get(i)+" ";
         }
         System.out.print("]");
+        resultPath += "]";
         System.out.println();
-        System.out.println("Steps taken: "+(resultArray.size()-1));
+        //System.out.println("Steps taken: "+(resultArray.size()-1));
+        resultSteps += "Steps taken: "+(resultArray.size()-1);
+        System.out.println(resultSteps);
+
+        // Showing results in a new window
+        JFrame window = new JFrame();
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
+
+        //adding a panel
+        window.add(new resultsPanel(resultPath, resultSteps));
+        window.pack(); // makes sure all contents are in preferred size
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+
+
     }
 }
