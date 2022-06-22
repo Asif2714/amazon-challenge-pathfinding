@@ -5,6 +5,15 @@
     Algorithm used: A* Pathfinding Algorithm
  */
 
+
+/*
+G Cost: Distance between starting position and current position
+H Cost: Distance between current position and goal
+F Cost: Sum of G+H Costs
+
+F cost is the most important one since it is the total cost
+ */
+
 //importing libraries
 
 import javax.swing.*;
@@ -27,3 +36,4 @@ public class Main {
     }
 
 }
+
