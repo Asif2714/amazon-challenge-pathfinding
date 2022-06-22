@@ -16,9 +16,10 @@ public class Panel  extends JPanel {
     Node startNode, goalNode, currentNode;
     ArrayList<Node> openList = new ArrayList<Node>();
     ArrayList<Node> checkedList = new ArrayList<Node>();
+    ArrayList<String> resultArray = new ArrayList<>();
 
-    // Check if goal reached
     boolean goalReached = false;
+    int steps = 0; //counts the number of times search is done
 
     // Constructor
     public Panel(){
@@ -52,7 +53,7 @@ public class Panel  extends JPanel {
 
         //setting solid node
         setSolidNode(1,0);
-        setSolidNode(1,1);
+        //setSolidNode(1,1);
         setSolidNode(1,2);
         setSolidNode(2,0);
         setSolidNode(4,0);
@@ -61,9 +62,10 @@ public class Panel  extends JPanel {
         setSolidNode(3,3);
         setSolidNode(3,4);
         setSolidNode(3,5);
-        setSolidNode(3,6);
+        //setSolidNode(3,6);
         setSolidNode(3,7);
         setSolidNode(3,8);
+        setSolidNode(3,9);
         setSolidNode(4,3);
         setSolidNode(5,3);
         setSolidNode(6,3);
@@ -197,10 +199,76 @@ public class Panel  extends JPanel {
             //check if goal node
             if(currentNode == goalNode){
                 goalReached = true;
+                backTrack(); // for showing the final result
             }
 
         }
     }
+
+
+    public void autoSearch(){
+        // does continuously, until reaches goal or step limit
+        while(goalReached == false && steps < 1000){
+            int col = currentNode.col;
+            int row = currentNode.row;
+
+            currentNode.setAsChecked();
+            checkedList.add(currentNode);
+            openList.remove(currentNode);
+
+            //opening nodes on 4 sides (if possible, check edge cases)
+            // Open the upper node
+            if (row -1 >= 0){
+                openNode(node[col][row-1]);
+            }
+            // Open the lower node
+            if (row +1 < maxRow){
+                openNode(node[col][row+1]);
+            }
+            // Open the left node
+            if(col-1 >= 0){
+                openNode(node[col-1][row]);
+            }
+            // Open the right node
+            if(col+1 < maxCol){
+                openNode(node[col+1][row]);
+            }
+
+            // Finding BEST NODE
+            int bestNodeIndex = 0; // assuming first node is best
+            int bestNodefCost = 1000;
+
+            for(int i = 0; i < openList.size(); i++){
+
+                // Checking if F cost is better for current node
+                // not useful for initial map since F cost is the same
+                if(openList.get(i).fCost < bestNodefCost){
+                    bestNodeIndex = i;
+                    bestNodefCost = openList.get(i).fCost;
+                }
+                // If F cost is not equal, check the G cost
+                else if(openList.get(i).fCost == bestNodefCost){
+                    if(openList.get(i).gCost < openList.get(bestNodeIndex).gCost){
+                        bestNodeIndex = i;
+                    }
+                }
+
+            }
+
+            // the best node is our next step
+            currentNode = openList.get(bestNodeIndex);
+
+            //check if goal node
+            if(currentNode == goalNode){
+                goalReached = true;
+                backTrack(); // for showing the final result
+            }
+
+        }
+
+        steps++;
+    }
+
 
     // change node to open state for evaluation
     private void openNode(Node node){
@@ -213,5 +281,32 @@ public class Panel  extends JPanel {
             node.parent = currentNode;
             openList.add(node);
         }
+    }
+
+    // Method to backtrack and get the best path
+    public void backTrack(){
+        Node current = goalNode;
+
+        // adding to result arraylist
+        resultArray.add("("+current.col + ","+current.row+")");
+
+        while(current != startNode){
+
+            current = current.parent;
+            resultArray.add("("+current.col + ","+current.row+")");
+
+            if(current != startNode){
+                current.setAsPath();
+            }
+        }
+
+        //printing result arrayList in reverse
+        System.out.print("The path is: [");
+        for (int i = resultArray.size()-1; i >= 0; i--){
+            System.out.print(resultArray.get(i)+" ");
+        }
+        System.out.print("]");
+        System.out.println();
+        System.out.println("Steps taken: "+(resultArray.size()-1));
     }
 }
