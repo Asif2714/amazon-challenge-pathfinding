@@ -37,7 +37,7 @@ public class Node extends JButton implements ActionListener {
 
     //method to set specific node as start
     public void setAsStart(){
-        setBackground(Color.BLUE);
+        setBackground(Color.RED);
         setForeground(Color.white);
         setText("S");
         start = true;
@@ -46,7 +46,7 @@ public class Node extends JButton implements ActionListener {
 
     //method to set specific node as goal
     public void setAsGoal(){
-        setBackground(Color.GREEN);
+        setBackground(Color.BLUE);
         setForeground(Color.black);
         setText("E");
         start = true;
@@ -58,6 +58,22 @@ public class Node extends JButton implements ActionListener {
         setBackground(Color.gray);
         setForeground(Color.white);
         solid = true;
+    }
+
+    //
+    public void setAsOpen(){
+        open = true;
+    }
+    public void setAsChecked(){
+        if(start == false && goal == false){
+            setBackground(Color.pink);
+            setForeground(Color.black);
+        }
+        checked = true;
+    }
+    public void setAsPath(){
+        setBackground(Color.green);
+        setForeground(Color.black);
     }
 
     // actions when button is clicked

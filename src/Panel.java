@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Panel  extends JPanel {
 
@@ -13,6 +14,11 @@ public class Panel  extends JPanel {
     // Nodes in 2D array with start, end, and current nodes
     Node[][] node = new Node [maxCol][maxRow];
     Node startNode, goalNode, currentNode;
+    ArrayList<Node> openList = new ArrayList<Node>();
+    ArrayList<Node> checkedList = new ArrayList<Node>();
+
+    // Check if goal reached
+    boolean goalReached = false;
 
     // Constructor
     public Panel(){
@@ -20,6 +26,8 @@ public class Panel  extends JPanel {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setLayout(new GridLayout(maxRow, maxCol));
+        this.addKeyListener(new KeyHandler(this));
+        this.setFocusable(true);
 
         // placing nodes in panel
         int row = 0;
@@ -130,5 +138,80 @@ public class Panel  extends JPanel {
         }
 
 
+    }
+
+    // Method which checks and evaluates a new node
+    // First we check if it is a goal,
+    // if not, mark as checked and remove from open/available ones
+    public void search(){
+        if(goalReached == false){
+            int col = currentNode.col;
+            int row = currentNode.row;
+
+            currentNode.setAsChecked();
+            checkedList.add(currentNode);
+            openList.remove(currentNode);
+
+            //opening nodes on 4 sides (if possible, check edge cases)
+            // Open the upper node
+            if (row -1 >= 0){
+                openNode(node[col][row-1]);
+            }
+            // Open the lower node
+            if (row +1 < maxRow){
+                openNode(node[col][row+1]);
+            }
+            // Open the left node
+            if(col-1 >= 0){
+                openNode(node[col-1][row]);
+            }
+            // Open the right node
+            if(col+1 < maxCol){
+                openNode(node[col+1][row]);
+            }
+
+            // Finding BEST NODE
+            int bestNodeIndex = 0; // assuming first node is best
+            int bestNodefCost = 1000;
+
+            for(int i = 0; i < openList.size(); i++){
+
+                // Checking if F cost is better for current node
+                // not useful for initial map since F cost is the same
+                if(openList.get(i).fCost < bestNodefCost){
+                    bestNodeIndex = i;
+                    bestNodefCost = openList.get(i).fCost;
+                }
+                // If F cost is not equal, check the G cost
+                else if(openList.get(i).fCost == bestNodefCost){
+                    if(openList.get(i).gCost < openList.get(bestNodeIndex).gCost){
+                        bestNodeIndex = i;
+                    }
+                }
+
+            }
+
+            // the best node is our next step
+            currentNode = openList.get(bestNodeIndex);
+
+            //check if goal node
+            if(currentNode == goalNode){
+                goalReached = true;
+            }
+
+        }
+    }
+
+    // change node to open state for evaluation
+    private void openNode(Node node){
+        // initial criteria for evaluation
+        if(node.open == false && node.checked == false && node.solid == false){
+
+            //mark the node as open, then set parent of current node as parent (for backtracking)
+            // then add it to open node
+            node.setAsOpen();
+            node.parent = currentNode;
+            openList.add(node);
+        }
     }
 }
